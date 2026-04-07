@@ -42,6 +42,7 @@ h2 {
 <div id="contenuto"></div>
 
 <script>
+// Calendario SILEA – Cesana Brianza
 function raccolta(date) {
   const g = date.getDay(); // 0 dom, 1 lun, ..., 6 sab
 
@@ -69,7 +70,8 @@ const box = document.getElementById("contenuto");
 let found = 0;
 let offset = 0;
 
-while (found < 2) {
+// ✅ ORA MOSTRA 3 GIORNI UTILI
+while (found < 3) {
   const d = new Date();
   d.setDate(d.getDate() + offset);
   const r = raccolta(d);
