@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Raccolta rifiuti – Cesana Brianza</title>
+<title>Raccolta rifiuti – Comune di Cesana Brianza</title>
 
 <style>
 body {
@@ -13,11 +13,16 @@ body {
   margin: 0;
   padding: 20px;
 }
-h1 { text-align: center; }
+h1 {
+  text-align: center;
+  margin-bottom: 6px;
+}
 h2 {
   text-align: center;
   font-weight: normal;
   color: #444;
+  margin-top: 0;
+  margin-bottom: 22px;
 }
 .card {
   background: #fff;
@@ -26,8 +31,12 @@ h2 {
   margin-bottom: 18px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
-.data { font-weight: 600; margin-bottom: 6px; }
+.data {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
 
+/* colori ufficiali */
 .umido { color: #2e7d32; }
 .carta { color: #1565c0; }
 .indiff { color: #424242; }
@@ -42,20 +51,30 @@ h2 {
 <div id="contenuto"></div>
 
 <script>
-// Calendario SILEA – Cesana Brianza
+/*
+  Calendario CESANA BRIANZA – SILEA (da PDF ufficiale)
+
+  ✅ Lunedì    → Indifferenziato + Umido
+  ✅ Martedì   → Indifferenziato + Umido
+  ❌ Mercoledì → Nulla
+  ❌ Giovedì   → Nulla
+  ✅ Venerdì   → Carta + Umido + Vetro
+  ❌ Sabato    → Nulla
+  ❌ Domenica  → Nulla
+*/
+
 function raccolta(date) {
-  const g = date.getDay(); // 0 dom, 1 lun, ..., 6 sab
+  const g = date.getDay(); // 0 = domenica, 1 = lunedì, ..., 6 = sabato
 
   if (g === 1 || g === 2) {
     return { testo: "Indifferenziato + Umido", cls: "indiff" };
   }
+
   if (g === 5) {
     return { testo: "Carta + Umido + Vetro", cls: "carta" };
   }
-  if (g === 6) {
-    return { testo: "Umido", cls: "umido" };
-  }
-  return null; // nessuna raccolta
+
+  return null; // tutti gli altri giorni non hanno raccolta
 }
 
 function formatDate(d) {
@@ -70,12 +89,12 @@ const box = document.getElementById("contenuto");
 let found = 0;
 let offset = 0;
 
-// ✅ ORA MOSTRA 3 GIORNI UTILI
+// ✅ MOSTRA I PROSSIMI 3 GIORNI CON RACCOLTA
 while (found < 3) {
   const d = new Date();
   d.setDate(d.getDate() + offset);
-  const r = raccolta(d);
 
+  const r = raccolta(d);
   if (r) {
     box.innerHTML += `
       <div class="card">
